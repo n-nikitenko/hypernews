@@ -1,0 +1,29 @@
+{% load news_main %}
+
+<html>
+<head>
+    <title>Hyper news</title>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <h2>Hyper news</h2>
+    <form method="get" action="/news/">
+        <input type="text" name="q">
+        <button type="submit">Find</button>
+    <br>
+    </form>
+    {% regroup news|dictsortreversed:"created" by created|str_to_date|date:"Y-m-d" as created_list %}
+    {% for item in created_list %}
+    <h4>{{ item.grouper }}</h4>
+
+    <ul>
+        {% for one_news in item.list %}
+      <li><a href="/news/{{ one_news.link }}/">{{ one_news.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    <a href="/news/create/" target="_blank">Create news</a>
+</body>
+</html>
